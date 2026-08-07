@@ -15,3 +15,11 @@ def step(alive, width, height):
             if n == 3 or (n == 2 and (x, y) in alive):
                 new.add((x, y))
     return new
+
+
+def render(alive, width, height):
+    """Return the grid as a block of text, one row per line."""
+    rows = []
+    for y in range(height):
+        rows.append("".join("#" if (x, y) in alive else "." for x in range(width)))
+    return "\n".join(rows)
