@@ -1,5 +1,10 @@
 OFFSETS = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
 
+PATTERNS = {
+    "block": {(0, 0), (1, 0), (0, 1), (1, 1)},
+    "blinker": {(0, 1), (1, 1), (2, 1)},
+}
+
 
 def step(alive, width, height):
     """Advance the grid by one generation and return the new live cells."""
