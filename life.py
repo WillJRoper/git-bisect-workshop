@@ -1,3 +1,5 @@
+import argparse
+
 OFFSETS = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
 
 PATTERNS = {
@@ -23,3 +25,20 @@ def render(alive, width, height):
     for y in range(height):
         rows.append("".join("#" if (x, y) in alive else "." for x in range(width)))
     return "\n".join(rows)
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description="Conway's Game of Life.")
+    parser.add_argument("pattern", help="name of the starting pattern")
+    parser.add_argument("--steps", type=int, default=10, help="generations to run")
+    args = parser.parse_args(argv)
+
+    width, height = 20, 10
+    alive = set(PATTERNS[args.pattern])
+    for _ in range(args.steps):
+        alive = step(alive, width, height)
+    print(render(alive, width, height))
+
+
+if __name__ == "__main__":
+    main()
