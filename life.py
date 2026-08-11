@@ -9,11 +9,14 @@ PATTERNS = {
 
 
 def step(alive, width, height):
-    """Advance the grid by one generation and return the new live cells."""
+    """Advance the grid by one generation and return the new live cells.
+
+    The grid wraps around at the edges, so it behaves like a torus.
+    """
     new = set()
     for x in range(width):
         for y in range(height):
-            n = sum((x + dx, y + dy) in alive for dx, dy in OFFSETS)
+            n = sum(((x + dx) % width, (y + dy) % height) in alive for dx, dy in OFFSETS)
             if n == 3 or (n == 2 and (x, y) in alive):
                 new.add((x, y))
     return new
