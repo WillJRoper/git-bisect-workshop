@@ -32,6 +32,11 @@ def render(alive, width, height):
     return "\n".join(rows)
 
 
+def place(pattern, width, height, x0=1, y0=1):
+    """Return a copy of the pattern shifted to start at (x0, y0)."""
+    return {(x + x0, y + y0) for x, y in pattern}
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Conway's Game of Life.")
     parser.add_argument("pattern", help="name of the starting pattern")
@@ -41,7 +46,7 @@ def main(argv=None):
     parser.add_argument("--no-animate", action="store_true", help="print only the final grid")
     args = parser.parse_args(argv)
 
-    alive = set(PATTERNS[args.pattern])
+    alive = place(PATTERNS[args.pattern], args.width, args.height)
     for _ in range(args.steps):
         if not args.no_animate:
             print("\033[2J\033[H" + render(alive, args.width, args.height))
