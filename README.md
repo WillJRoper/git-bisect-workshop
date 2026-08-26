@@ -1,6 +1,6 @@
 # life
 
-Conways Game of Life in plain Python, no dependencies.
+Conway's Game of Life in plain Python, no dependencies.
 
 ## Running it
 
