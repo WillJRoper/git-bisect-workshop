@@ -30,7 +30,7 @@ def render(alive, width, height):
     """Return the grid as a block of text, one row per line."""
     rows = []
     for y in range(height):
-        rows.append("".join("#" if (x, y) in alive else "." for x in range(width)))
+        rows.append("".join("█" if (x, y) in alive else "·" for x in range(width)))
     return "\n".join(rows)
 
 
