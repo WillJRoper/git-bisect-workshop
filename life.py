@@ -57,13 +57,15 @@ def main(argv=None):
     args = parser.parse_args(argv)
 
     alive = place(PATTERNS[args.pattern], args.width, args.height)
-    for _ in range(args.steps):
+    for generation in range(args.steps):
         if not args.no_animate:
             print("\033[2J\033[H" + render(alive, args.width, args.height))
+            print(f"generation {generation}")
             time.sleep(args.delay)
         alive = step(alive, args.width, args.height)
     if args.no_animate:
         print(render(alive, args.width, args.height))
+        print(f"generation {args.steps}")
 
 
 if __name__ == "__main__":
