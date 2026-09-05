@@ -1,3 +1,10 @@
+"""Conway's Game of Life on a wrapping grid.
+
+Run a named pattern and watch it evolve in the terminal:
+
+    python life.py glider
+    python life.py blinker --steps 20 --delay 0.2
+"""
 import argparse
 import time
 
