@@ -61,12 +61,12 @@ def main(argv=None):
     for generation in range(args.steps):
         if not args.no_animate:
             print("\033[2J\033[H" + render(alive, args.width, args.height))
-            print(f"generation {generation}")
+            print(f"generation {generation}, {len(alive)} alive")
             time.sleep(args.delay)
         alive = step(alive, args.width, args.height)
     if args.no_animate:
         print(render(alive, args.width, args.height))
-        print(f"generation {args.steps}")
+        print(f"generation {args.steps}, {len(alive)} alive")
 
 
 if __name__ == "__main__":
