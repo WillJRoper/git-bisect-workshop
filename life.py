@@ -20,7 +20,7 @@ PATTERNS = {
 }
 
 
-def step(alive, width, height):
+def step(alive: set[tuple[int, int]], width: int, height: int) -> set[tuple[int, int]]:
     """Advance the grid by one generation and return the new live cells.
 
     The grid wraps around at the edges, so it behaves like a torus.
@@ -34,7 +34,7 @@ def step(alive, width, height):
     return new
 
 
-def render(alive, width, height):
+def render(alive: set[tuple[int, int]], width: int, height: int) -> str:
     """Return the grid as a block of text, one row per line."""
     rows = []
     for y in range(height):
@@ -42,7 +42,7 @@ def render(alive, width, height):
     return "\n".join(rows)
 
 
-def place(pattern, width, height, x0=1, y0=1):
+def place(pattern: set[tuple[int, int]], width: int, height: int, x0: int = 1, y0: int = 1) -> set[tuple[int, int]]:
     """Return a copy of the pattern shifted to start at (x0, y0)."""
     cells = {(x + x0, y + y0) for x, y in pattern}
     if any(x >= width or y >= height for x, y in cells):
