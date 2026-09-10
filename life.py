@@ -44,7 +44,10 @@ def render(alive, width, height):
 
 def place(pattern, width, height, x0=1, y0=1):
     """Return a copy of the pattern shifted to start at (x0, y0)."""
-    return {(x + x0, y + y0) for x, y in pattern}
+    cells = {(x + x0, y + y0) for x, y in pattern}
+    if any(x >= width or y >= height for x, y in cells):
+        raise ValueError("pattern does not fit in the grid")
+    return cells
 
 
 def main(argv=None):
