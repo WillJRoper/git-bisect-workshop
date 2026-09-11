@@ -20,6 +20,11 @@ PATTERNS = {
 }
 
 
+def count_neighbours(alive: set[tuple[int, int]], x: int, y: int, width: int, height: int) -> int:
+    """Count the live neighbours of (x, y), wrapping at the edges."""
+    return sum(((x + dx) % width, (y + dy) % width) in alive for dx, dy in OFFSETS)
+
+
 def step(alive: set[tuple[int, int]], width: int, height: int) -> set[tuple[int, int]]:
     """Advance the grid by one generation and return the new live cells.
 
@@ -28,7 +33,7 @@ def step(alive: set[tuple[int, int]], width: int, height: int) -> set[tuple[int,
     new = set()
     for x in range(width):
         for y in range(height):
-            n = sum(((x + dx) % width, (y + dy) % height) in alive for dx, dy in OFFSETS)
+            n = count_neighbours(alive, x, y, width, height)
             if n == 3 or (n == 2 and (x, y) in alive):
                 new.add((x, y))
     return new
