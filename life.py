@@ -6,6 +6,7 @@ Run a named pattern and watch it evolve in the terminal:
     python life.py blinker --steps 20 --delay 0.2
 """
 import argparse
+import random
 import time
 
 OFFSETS = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
@@ -57,7 +58,8 @@ def place(pattern: set[tuple[int, int]], width: int, height: int, x0: int = 1, y
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Conway's Game of Life.")
-    parser.add_argument("pattern", help="name of the starting pattern")
+    parser.add_argument("pattern", nargs="?", help="name of the starting pattern")
+    parser.add_argument("--seed", type=int, help="start from a random grid with this seed")
     parser.add_argument("--steps", type=int, default=100, help="generations to run")
     parser.add_argument("--width", type=int, default=40, help="grid width in cells")
     parser.add_argument("--height", type=int, default=20, help="grid height in cells")
@@ -65,7 +67,13 @@ def main(argv=None):
     parser.add_argument("--no-animate", action="store_true", help="print only the final grid")
     args = parser.parse_args(argv)
 
-    alive = place(PATTERNS[args.pattern], args.width, args.height)
+    if args.seed is not None:
+        rng = random.Random(args.seed)
+        alive = {(x, y) for x in range(args.width) for y in range(args.height) if rng.random() < 0.3}
+    elif args.pattern:
+        alive = place(PATTERNS[args.pattern], args.width, args.height)
+    else:
+        parser.error("give a pattern name or --seed")
     for generation in range(args.steps):
         if not args.no_animate:
             print("\033[2J\033[H" + render(alive, args.width, args.height))
