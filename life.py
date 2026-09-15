@@ -6,8 +6,11 @@ Run a named pattern and watch it evolve in the terminal:
     python life.py blinker --steps 20 --delay 0.2
 """
 import argparse
+import os
 import random
 import time
+
+CLEAR = "cls" if os.name == "nt" else "clear"
 
 OFFSETS = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
 
@@ -86,7 +89,8 @@ def main(argv=None):
         parser.error("give a pattern name or --seed")
     for generation in range(args.steps):
         if not args.no_animate:
-            print("\033[2J\033[H" + render(alive, args.width, args.height))
+            os.system(CLEAR)
+            print(render(alive, args.width, args.height))
             print(f"generation {generation}, {len(alive)} alive")
             time.sleep(args.delay)
         alive = step(alive, args.width, args.height)
