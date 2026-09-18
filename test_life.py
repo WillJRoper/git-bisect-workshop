@@ -9,6 +9,11 @@ class StillLifeTests(unittest.TestCase):
         self.assertEqual(step(block, 10, 10), block)
 
 
+class EmptyGridTests(unittest.TestCase):
+    def test_empty_grid_stays_empty(self):
+        self.assertEqual(step(set(), 10, 10), set())
+
+
 class OscillatorTests(unittest.TestCase):
     def test_blinker_has_period_two(self):
         blinker = PATTERNS["blinker"]
