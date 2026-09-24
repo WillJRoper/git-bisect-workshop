@@ -73,6 +73,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="Conway's Game of Life.")
     parser.add_argument("pattern", nargs="?", choices=sorted(PATTERNS), help="name of the starting pattern")
     parser.add_argument("--seed", type=int, help="start from a random grid with this seed")
+    parser.add_argument("--list", action="store_true", help="list the available patterns and exit")
     parser.add_argument("--steps", type=int, default=100, help="generations to run")
     parser.add_argument("--width", type=int, default=40, help="grid width in cells")
     parser.add_argument("--height", type=int, default=20, help="grid height in cells")
@@ -80,6 +81,9 @@ def main(argv=None):
     parser.add_argument("--no-animate", action="store_true", help="print only the final grid")
     args = parser.parse_args(argv)
 
+    if args.list:
+        print("\n".join(sorted(PATTERNS)))
+        return
     if args.seed is not None:
         rng = random.Random(args.seed)
         alive = {(x, y) for x in range(args.width) for y in range(args.height) if rng.random() < 0.3}
