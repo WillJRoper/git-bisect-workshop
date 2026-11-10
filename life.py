@@ -35,14 +35,40 @@ PATTERNS = {
 
 
 def count_neighbours(alive: set[tuple[int, int]], x: int, y: int, width: int, height: int) -> int:
-    """Count the live neighbours of (x, y), wrapping at the edges."""
+    """Count the live neighbours of one cell.
+
+    The grid wraps at the edges, so a cell on the left edge neighbours the
+    right edge and a cell on the top edge neighbours the bottom.
+
+    Args:
+        alive: The set of live cells as (x, y) pairs.
+        x: Column of the cell to inspect.
+        y: Row of the cell to inspect.
+        width: Width of the grid in cells.
+        height: Height of the grid in cells.
+
+    Returns:
+        The number of live cells among the eight neighbours, 0 to 8.
+    """
     return sum(((x + dx) % width, (y + dy) % width) in alive for dx, dy in OFFSETS)
 
 
 def step(alive: set[tuple[int, int]], width: int, height: int) -> set[tuple[int, int]]:
-    """Advance the grid by one generation and return the new live cells.
+    """Advance the grid by one generation.
 
-    The grid wraps around at the edges, so it behaves like a torus.
+    Applies Conway's rules to every cell: a live cell with two or three live
+    neighbours survives, a dead cell with exactly three live neighbours is
+    born, everything else is dead in the next generation. The grid wraps
+    around at the edges, so it behaves like a torus.
+
+    Args:
+        alive: The set of live cells as (x, y) pairs.
+        width: Width of the grid in cells.
+        height: Height of the grid in cells.
+
+    Returns:
+        A new set of live cells for the next generation. The input set is
+        not modified.
     """
     new = set()
     for x in range(width):
@@ -54,7 +80,17 @@ def step(alive: set[tuple[int, int]], width: int, height: int) -> set[tuple[int,
 
 
 def render(alive: set[tuple[int, int]], width: int, height: int) -> str:
-    """Return the grid as a block of text, one row per line."""
+    """Draw the grid as text.
+
+    Args:
+        alive: The set of live cells as (x, y) pairs.
+        width: Width of the grid in cells.
+        height: Height of the grid in cells.
+
+    Returns:
+        A string with one line per row, a block glyph for each live cell and
+        a dot for each dead cell. No trailing newline.
+    """
     rows = []
     for y in range(height):
         rows.append("".join("█" if (x, y) in alive else "·" for x in range(width)))
@@ -62,7 +98,22 @@ def render(alive: set[tuple[int, int]], width: int, height: int) -> str:
 
 
 def place(pattern: set[tuple[int, int]], width: int, height: int, x0: int = 1, y0: int = 1) -> set[tuple[int, int]]:
-    """Return a copy of the pattern shifted to start at (x0, y0)."""
+    """Offset a pattern so it sits inside the grid.
+
+    Args:
+        pattern: Cells of the pattern as (x, y) pairs relative to its own
+            top left corner.
+        width: Width of the grid in cells.
+        height: Height of the grid in cells.
+        x0: Column to place the pattern's left edge at.
+        y0: Row to place the pattern's top edge at.
+
+    Returns:
+        A new set of cells shifted by (x0, y0).
+
+    Raises:
+        ValueError: If any shifted cell falls outside the grid.
+    """
     cells = {(x + x0, y + y0) for x, y in pattern}
     if any(x >= width or y >= height for x, y in cells):
         raise ValueError("pattern does not fit in the grid")
@@ -70,6 +121,16 @@ def place(pattern: set[tuple[int, int]], width: int, height: int, x0: int = 1, y
 
 
 def main(argv=None):
+    """Run the command line interface.
+
+    Parses the arguments, builds the starting grid from a named pattern or a
+    random seed, then either animates it in the terminal or prints only the
+    final generation.
+
+    Args:
+        argv: Command line arguments to parse. Defaults to ``sys.argv[1:]``
+            when None.
+    """
     parser = argparse.ArgumentParser(description="Conway's Game of Life.")
     parser.add_argument("pattern", nargs="?", choices=sorted(PATTERNS), help="name of the starting pattern")
     parser.add_argument("--seed", type=int, help="start from a random grid with this seed")
