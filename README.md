@@ -19,14 +19,6 @@ a one-hour git workshop. Slides: <https://willjroper.github.io/git-workshop/>.
    python life.py glider
    ```
 
-No local setup? After forking, open your fork in a Codespace (green **Code**
-button, **Codespaces** tab) and run the same commands there.
-
-You will need a [GitHub account](https://github.com/signup), `git`, Python 3,
-and a way to push to GitHub: `gh auth login`
-([GitHub CLI](https://cli.github.com/)) or
-[an SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh).
-
 ## The problem
 
 The glider should glide diagonally across the grid forever, wrapping at the
