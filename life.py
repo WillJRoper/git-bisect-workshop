@@ -36,7 +36,7 @@ PATTERNS = {
 
 def count_neighbours(alive: set[tuple[int, int]], x: int, y: int, width: int, height: int) -> int:
     """Count the live neighbours of (x, y), wrapping at the edges."""
-    return sum(((x + dx) % width, (y + dy) % width) in alive for dx, dy in OFFSETS)
+    return sum(((x + dx) % width, (y + dy) % height) in alive for dx, dy in OFFSETS)
 
 
 def step(alive: set[tuple[int, int]], width: int, height: int) -> set[tuple[int, int]]:

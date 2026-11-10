@@ -1,6 +1,6 @@
 import unittest
 
-from life import PATTERNS, step
+from life import PATTERNS, place, step
 
 
 class StillLifeTests(unittest.TestCase):
@@ -33,3 +33,12 @@ class OscillatorTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class GliderTests(unittest.TestCase):
+    def test_glider_wraps_round_the_grid(self):
+        start = place(PATTERNS["glider"], 40, 20)
+        cells = start
+        for _ in range(160):
+            cells = step(cells, 40, 20)
+        self.assertEqual(cells, start)
